@@ -92,5 +92,6 @@ const styles = StyleSheet.create({
   image:{
     height:22,
     width:22,
+
   }
 });
