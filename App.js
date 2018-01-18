@@ -4,16 +4,20 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image
+    Platform,
+    StyleSheet,
+    Text,
+    View,
+    Image
 } from 'react-native';
+
 import TabNavigator from 'react-native-tab-navigator';
 
+import {Navigator} from 'react-native-deprecated-custom-components';
+
+import Boy from './Boy'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -32,7 +36,7 @@ export default class App extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
-        <TabNavigator>
+      <TabNavigator>
           <TabNavigator.Item
               selected={this.state.selectedTab === 'tb_popular'}
               selectedTitleStyle = {{color:'red'}}
@@ -41,7 +45,17 @@ export default class App extends Component<{}> {
               renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'red'}]} source={require('./res/images/tab_home_icon_selected.png')} />}
               badgeText="1"
               onPress={() => this.setState({ selectedTab: 'tb_popular' })}>
-            <View style={styles.page1}></View>
+            <View style={styles.page1}>
+              <Navigator
+                  initialRoute = {{
+                    component:Boy
+                  }}
+                  renderScene = {(route,navigator)=>{
+                    let Component = route.component;
+                    return <Component navigator={navigator} {...route.params}/>
+                  }}
+              ></Navigator>
+            </View>
           </TabNavigator.Item>
           <TabNavigator.Item
               selected={this.state.selectedTab === 'tb_trending'}
@@ -71,6 +85,7 @@ export default class App extends Component<{}> {
             <View style={styles.page2}></View>
           </TabNavigator.Item>
         </TabNavigator>
+
       </View>
     );
   }
