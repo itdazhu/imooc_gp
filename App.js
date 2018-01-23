@@ -17,7 +17,10 @@ import TabNavigator from 'react-native-tab-navigator';
 
 import {Navigator} from 'react-native-deprecated-custom-components';
 
-import Boy from './Boy'
+import Boy from './Boy';
+
+import ListViewTest from  './ListViewTest';
+
 
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' +
@@ -55,6 +58,7 @@ export default class App extends Component<{}> {
                     return <Component navigator={navigator} {...route.params}/>
                   }}
               ></Navigator>
+
             </View>
           </TabNavigator.Item>
           <TabNavigator.Item
@@ -64,7 +68,9 @@ export default class App extends Component<{}> {
               renderIcon={() => <Image style={styles.image} source={require('./res/images/tab_message_icon_normal.png')} />}
               renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'red'}]} source={require('./res/images/tab_message_icon_selected.png')} />}
               onPress={() => this.setState({ selectedTab: 'tb_trending' })}>
-            <View style={styles.page2}></View>
+            <View style={styles.page2}>
+                <ListViewTest/>
+            </View>
           </TabNavigator.Item>
           <TabNavigator.Item
               selected={this.state.selectedTab === 'tb_favorite'}
