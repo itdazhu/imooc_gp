@@ -39,6 +39,7 @@ export default class App extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
+          /*
       <TabNavigator>
           <TabNavigator.Item
               selected={this.state.selectedTab === 'tb_popular'}
@@ -91,7 +92,7 @@ export default class App extends Component<{}> {
             <View style={styles.page2}></View>
           </TabNavigator.Item>
         </TabNavigator>
-
+        */
       </View>
     );
   }

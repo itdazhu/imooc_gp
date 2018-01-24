@@ -10,7 +10,7 @@ import {
     StyleSheet
 }from 'react-native';
 
-import NavigationBar from  './NavigationBar';
+import NavigationBar from  '../js/common/NavigationBar';
 
 export default class Girl extends Component {
     constructor(props){
@@ -29,17 +29,19 @@ export default class Girl extends Component {
     render(){
         return (
             <View style={styles.container}>
+                /*
                 <NavigationBar title={'Girl'}
                                style={{
                                    backgroundColor:'#9932CC'
                                }}
                                leftButton={
-                                   this.renderButton(require('./res/images/back_icon.png'))
+                                   this.renderButton(require('./../res/images/back_icon.png'))
                                }
                                rightButton={
-                                   this.renderButton(require('./res/images/collect.png'))
+                                   this.renderButton(require('./../res/images/collect.png'))
                                }
                 ></NavigationBar>
+                */
                  <Text style={styles.text}>I am a girl</Text>
                 <Text style={styles.text}>我收到了：{this.props.word}</Text>
                 <Text style={styles.text}
