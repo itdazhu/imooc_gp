@@ -26,6 +26,9 @@ export default class WelcomPage extends Component{
         return <View>
             <NavigationBar
                 title={'欢迎'}
+                style={{
+                    backgroundColor:'#2196F3'
+                }}
             />
             <Text>欢迎</Text>
         </View>
