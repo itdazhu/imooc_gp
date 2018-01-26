@@ -36,7 +36,7 @@ export default class MyPage extends Component{
                     dataArray:result
                 })
             })
-            .then((error)=>{
+            .catch((error)=>{
                 console.log(error);
             })
     }
