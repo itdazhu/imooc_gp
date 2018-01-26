@@ -12,6 +12,7 @@ import {
 
 import TabNavigator from 'react-native-tab-navigator';
 import PopularPage from './PopularPage'
+import MyPage from './my/MyPage'
 
 export default class HomePage extends Component{
     constructor(props){
@@ -60,7 +61,7 @@ export default class HomePage extends Component{
                     renderIcon={() => <Image style={styles.image} source={require('../../res/images/tab_message_icon_normal.png')} />}
                     renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'#2196F3'}]} source={require('../../res/images/tab_message_icon_selected.png')} />}
                     onPress={() => this.setState({ selectedTab: 'tb_my' })}>
-                    <View style={styles.page2}></View>
+                    <MyPage {...this.props}/>
                 </TabNavigator.Item>
             </TabNavigator>
 

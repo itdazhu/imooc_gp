@@ -32,7 +32,7 @@ export default class RepositoryCell extends Component{
                 </View>
                 <Image
                     style={{width:22,height:22}}
-                    source={require('../../../res/images/collect.png')}/>
+                    source={require('../../res/images/collect.png')}/>
             </View>
             </View>
             </TouchableOpacity>
