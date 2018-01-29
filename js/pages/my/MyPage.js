@@ -10,6 +10,7 @@ import {
 
 import NavigationBar from  '../../common/NavigationBar';
 import CustomKeyPage from './CustomKeyPage';
+import SortKeyPage from './SortKeyPage';
 
 export default class MyPage extends Component{
     render(){
@@ -27,6 +28,13 @@ export default class MyPage extends Component{
                 })
             }
             }>我的</Text>
+            <Text onPress={()=>{
+                this.props.navigator.push({
+                    component:SortKeyPage,
+                    params:{...this.props}
+                })
+            }
+            }>排序</Text>
         </View>
     }
 }
