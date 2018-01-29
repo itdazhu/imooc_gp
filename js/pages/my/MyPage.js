@@ -14,7 +14,7 @@ import SortKeyPage from './SortKeyPage';
 
 export default class MyPage extends Component{
     render(){
-        return <View>
+        return <View style={styles.container}>
             <NavigationBar
                 title={'我的'}
                 style={{
@@ -34,8 +34,23 @@ export default class MyPage extends Component{
                     params:{...this.props}
                 })
             }
-            }>排序</Text>
+            }>标签排序</Text>
+            <Text onPress={()=>{
+                this.props.navigator.push({
+                    component:CustomKeyPage,
+                    params:{...this.props,
+                        isRemoveKey:true}
+                })
+            }
+            }>删除标签</Text>
         </View>
     }
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+
+    },
+})

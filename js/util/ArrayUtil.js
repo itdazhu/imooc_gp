@@ -4,7 +4,7 @@
 
 export default class ArrayUtil{
     /**
-     * 更新数组，若元素存在就删除，然后添加进数组
+     * 更新数组，若元素存在就删除，如果不存在就添加进数组
      * @param array
      * @param item
      */
@@ -12,13 +12,12 @@ export default class ArrayUtil{
         for(let i=0,len=array.length;i<len;i++){
             var temp=array[i];
             if(temp===item){
-                this.chanageValues.splice(i,1);//删除
+                array.splice(i,1);//删除
                 return;
             }
         }
         array.push(item);
     }
-
     /**
      * 克隆一个数组
      * @param from
@@ -44,5 +43,17 @@ export default class ArrayUtil{
             if (arr1[i]!=arr2[i])return false;
         }
         return true;
+    }
+
+    /**
+     * 从数组中删除元素
+     * @param arr
+     * @param item
+     */
+    static  remove(arr,item){
+        if(arr.length==0)return;
+        for(let i=0;i<arr.length;i++){
+           if(arr[i]===item)arr.splice(i,1);
+        }
     }
 }
