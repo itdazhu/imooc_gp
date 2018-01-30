@@ -14,6 +14,7 @@ import {
 import TabNavigator from 'react-native-tab-navigator';
 import PopularPage from './PopularPage'
 import MyPage from './my/MyPage'
+import WebViewTest from '../../other/WebViewTest'
 import Toast,{DURATION} from 'react-native-easy-toast'
 
 export default class HomePage extends Component{
