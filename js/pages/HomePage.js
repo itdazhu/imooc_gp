@@ -7,12 +7,14 @@ import {
     StyleSheet,
     Text,
     View,
-    Image
+    Image,
+    DeviceEventEmitter
 }from 'react-native';
 
 import TabNavigator from 'react-native-tab-navigator';
 import PopularPage from './PopularPage'
 import MyPage from './my/MyPage'
+import Toast,{DURATION} from 'react-native-easy-toast'
 
 export default class HomePage extends Component{
     constructor(props){
@@ -20,6 +22,14 @@ export default class HomePage extends Component{
         this.state={
             selectedTab:'tb_popular'
         }
+    }
+    componentDidMount(){
+        this.listener=DeviceEventEmitter.addListener('showToast',(text)=>{
+            this.toast.show(text,DURATION.LENGTH_LONG);
+        })
+    }
+    componentWillUnmount(){
+        this.listener&&this.listener.remove();
     }
     render(){
         return (
@@ -52,7 +62,7 @@ export default class HomePage extends Component{
                              renderIcon={() => <Image style={styles.image} source={require('../../res/images/tab_message_icon_normal.png')} />}
                              renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'#2196F3'}]} source={require('../../res//images/tab_message_icon_selected.png')} />}
                              onPress={() => this.setState({ selectedTab: 'tb_favorite' })}>
-                    <View style={styles.page1}></View>
+                    <WebViewTest/>
                 </TabNavigator.Item>
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'tb_my'}
@@ -64,7 +74,7 @@ export default class HomePage extends Component{
                     <MyPage {...this.props}/>
                 </TabNavigator.Item>
             </TabNavigator>
-
+            <Toast ref={toast=>this.toast=toast}/>
         </View>
         )
     }

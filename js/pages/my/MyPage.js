@@ -21,21 +21,21 @@ export default class MyPage extends Component{
                     backgroundColor:'#2196F3'
                 }}
             />
-            <Text onPress={()=>{
+            <Text style={styles.item} onPress={()=>{
                 this.props.navigator.push({
                     component:CustomKeyPage,
                     params:{...this.props}
                 })
             }
             }>我的</Text>
-            <Text onPress={()=>{
+            <Text style={styles.item} onPress={()=>{
                 this.props.navigator.push({
                     component:SortKeyPage,
                     params:{...this.props}
                 })
             }
             }>标签排序</Text>
-            <Text onPress={()=>{
+            <Text style={styles.item} onPress={()=>{
                 this.props.navigator.push({
                     component:CustomKeyPage,
                     params:{...this.props,
@@ -50,7 +50,10 @@ export default class MyPage extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
-
+        backgroundColor:'#F5FCFF',
     },
+    item:{
+        padding:10,
+        fontSize:18,
+    }
 })
