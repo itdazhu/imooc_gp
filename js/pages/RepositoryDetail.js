@@ -8,27 +8,30 @@ import {
     StyleSheet,
     WebView,
     TextInput,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    TouchableOpacity
 }from 'react-native';
 
-import Girl from './Girl';
-import NavigationBar from  '../js/common/NavigationBar';
+import NavigationBar from  '../common/NavigationBar';
+import ViewUtil from '../util/ViewUtil';
 
 const URL='http://www.baidu.com';
-export default class WebViewTest extends Component {
+export default class RepositoryDetail extends Component {
     constructor(props){
         super(props);
+        this.url=this.props.item.html_url;
+        let title=this.props.item.full_name;
         this.state = {
-            url:URL,
-            title:'',
+            url:this.url,
+            title:title,
             canGoBack:false
         }
     }
-    goBack(){
+    onBack(){
         if(this.state.canGoBack){
             this.webView.goBack();
         }else{
-            DeviceEventEmitter.emit('showToast','到底了');
+            this.props.navigator.pop();
         }
     }
     go(){
@@ -38,33 +41,29 @@ export default class WebViewTest extends Component {
     }
     onNavigationStateChange(e){
         this.setState({
-            canGoBack:e.canGoBack,
-            title:e.title
+            canGoBack:e.canGoBack
         })
     }
     render(){
+        let rightButton=<TouchableOpacity
+            onPress={()=>this.onSave()}>
+            <View style={{margin:10}}>
+                <Text style={styles.title}>分享</Text>
+            </View>
+        </TouchableOpacity>;
         return (
             <View style={styles.container}>
-                <NavigationBar title={'webViewTest'}
+                <NavigationBar title={this.state.title}
                                style={{
                                    backgroundColor:'#2196F3'
                                }}
+                               leftButton={ViewUtil.getLeftButton(()=>{this.onBack()})}
                 ></NavigationBar>
-                <View style={styles.row}>
-                    <Text style={styles.title} onPress={()=>{
-                        this.goBack();
-                    }}>返回</Text>
-                    <TextInput style={styles.input}
-                               defaultValue={this.state.url}
-                               onChangeText={text=>this.text=text}/>
-                    <Text style={styles.title}  onPress={()=>{
-                        this.go();
-                    }}>前往</Text>
-                </View>
                 <WebView
                     ref={webView=>this.webView=webView}
                     source={{uri:this.state.url}}
-                    onNavigationStateChange={(e)=>this.onNavigationStateChange(e)}/>
+                    onNavigationStateChange={(e)=>this.onNavigationStateChange(e)}
+                    startInLoadingState={true}/>
         </View>
     )
     }
@@ -74,6 +73,10 @@ const styles=StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:'white',
+    },
+    title:{
+        fontSize:20,
+        color:'white'
     },
     text:{
         fontSize:10
