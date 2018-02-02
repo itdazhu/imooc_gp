@@ -12,28 +12,53 @@ import {
 }from 'react-native';
 
 export default class RepositoryCell extends Component{
+    constructor(props){
+        super(props);
+        this.state={
+            isFarivate:this.props.projectModel.isFarivate,
+            farivateIcon:this.props.projectModel.isFarivate?require('../../res/images/ic_star.png'):require('../../res/images/ic_unstar_transparent.png')
+        }
+    }
+    updateFarivate(isFarivate){
+        this.setState({
+            isFarivate:isFarivate,
+            farivateIcon:isFarivate?require('../../res/images/ic_star.png'):require('../../res/images/ic_unstar_transparent.png')
+        })
+        this.props.onFarivate(this.props.projectModel.item,isFarivate);
+    }
+    //属性改变的时候调用
+    componentWillReceiveProps(nextProps){
+        this.updateFarivate(nextProps.projectModel.isFarivate);
+    }
     render(){
+        let item=this.props.projectModel.item;
+        let farivateButton=<TouchableOpacity
+            onPress={()=>{
+                this.updateFarivate(!this.state.isFarivate);
+            }}>
+            <Image
+                style={{width:22,height:22,tintColor:'#2196F3'}}
+                source={this.state.farivateIcon}/>
+        </TouchableOpacity>;
         return <TouchableOpacity
             style={styles.container}
             onPress={this.props.onSelect}
         >
             <View style={styles.cell_container}>
-            <Text style={styles.title}>{this.props.data.full_name}</Text>
-            <Text style={styles.description}>{this.props.data.description}</Text>
+            <Text style={styles.title}>{item.full_name}</Text>
+            <Text style={styles.description}>{item.description}</Text>
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
                     <Text>Author:</Text>
                     <Image
                         style={{width:22,height:22}}
-                        source={{uri:this.props.data.owner.avatar_url}}/>
+                        source={{uri:item.owner.avatar_url}}/>
                 </View>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
                     <Text>Stars:</Text>
-                    <Text>{this.props.data.stargazers_count}</Text>
+                    <Text>{item.stargazers_count}</Text>
                 </View>
-                <Image
-                    style={{width:22,height:22}}
-                    source={require('../../res/images/collect.png')}/>
+                {farivateButton}
             </View>
             </View>
             </TouchableOpacity>

@@ -19,8 +19,8 @@ const URL='http://www.baidu.com';
 export default class RepositoryDetail extends Component {
     constructor(props){
         super(props);
-        this.url=this.props.item.html_url;
-        let title=this.props.item.full_name;
+        this.url=this.props.projectModel.item.html_url;
+        let title=this.props.projectModel.item.full_name;
         this.state = {
             url:this.url,
             title:title,

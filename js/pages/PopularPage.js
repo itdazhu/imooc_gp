@@ -18,10 +18,14 @@ import ScrollableTabView,{ScrollableTabBar} from 'react-native-scrollable-tab-vi
 import RepositoryCell from '../common/RepositoryCell';
 import LanguageDao,{FLAGE_LANGUAGE} from'../expand/dao/LanguageDao';
 import RepositoryDetail from './RepositoryDetail'
+import ProjectModel from '../model/ProjectModel'
+import FarivateDao from '../expand/dao/FarivateDao'
+import Utils from '../util/Utils'
 
 const URL='https://api.github.com/search/repositories?q=';
 const QUERY_STR='&sort=stars';
 
+var farivateDao =new FarivateDao("FLAG_POPULAR")
 export default class PopularPage extends Component{
     constructor(props){
         super(props);
@@ -84,10 +88,37 @@ class PopularTab extends Component{
         this.state={
             dataSource: new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2}),
             isLoading:false,
+            farivateKeys:[]
         }
     }
     componentDidMount(){
         this.loadData();
+    }
+    flushFarivateState(){
+        let projectModels=[];
+        let items=this.items;
+        for(let i=0;i<items.length;i++){
+            projectModels.push(new ProjectModel(items[i],Utils.checkFarivate(items[i],this.state.farivateKeys)));
+        }
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(projectModels),
+            isLoading:false//刷新后置为false
+        })
+
+    }
+    getFarivateKeys(){
+        farivateDao.getFavoriteKeys()
+            .then(keys=>{
+                if(keys){
+                    this.setState({
+                        farivateKeys:keys
+                    })
+                }
+                this.flushFarivateState();
+            })
+            .catch(e=>{
+                this.flushFarivateState();
+            })
     }
     loadData(){
         //开始刷新
@@ -97,11 +128,8 @@ class PopularTab extends Component{
         let url=URL+this.props.tabLabel+QUERY_STR;
         this.dataRepository.fetchRepository(url)
             .then(result=>{
-                let items=result&&result.items? result.items :result?result:[];
-                this.setState({
-                    dataSource:this.state.dataSource.cloneWithRows(items),
-                    isLoading:false//刷新后置为false
-                })
+                this.items=result&&result.items? result.items :result?result:[];
+                this.getFarivateKeys();
                 if(result&&result.update_data&&!this.dataRepository.checkDate(result.update_data)){
                     DeviceEventEmitter.emit('showToast','数据过时');
                     return this.dataRepository.fetchNetRepository(url);
@@ -111,27 +139,39 @@ class PopularTab extends Component{
             })
             .then(items=>{
                 if(!items||items.length===0)return;
-                this.setState({
-                    dataSource:this.state.dataSource.cloneWithRows(items),
-                })
+                this.items=items;
+                this.getFarivateKeys();
                 DeviceEventEmitter.emit('showToast','显示网络数据');
             })
             .catch(error=>{
                 console.log(error);
             })
     }
-    onSelect(item){
+    onSelect(projectModel){
         this.props.navigator.push({
             component:RepositoryDetail,
             params:{
-                item:item,
+                projectModel:projectModel,
                 ...this.props
             }
         })
     }
-    renderRow(item){
+    onFarivate(item,isFarivate){
+        if(isFarivate){
+            farivateDao.saveFavoriteItem(item.id.toString(),JSON.stringify(item));
+        }else{
+            farivateDao.removeFavoriteItem(item.id.toString());
+        }
+    }
+    renderRow(projectModel){
         return <View>
-            <RepositoryCell key={item.id} onSelect={()=>this.onSelect(item)} data={item}/>
+            <RepositoryCell
+                key={projectModel.item.id}
+                onSelect={()=>this.onSelect(projectModel)}
+                projectModel={projectModel}
+                onFarivate={(item,isFarivate)=>this.onFarivate(item,isFarivate)}
+            />
+
         </View>
     }
     render(){
